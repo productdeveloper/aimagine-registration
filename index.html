@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AImagine — Student Registration</title>
+  <meta name="description" content="AImagine student registration powered by TutorBird." />
+  <style>
+    /* simple, clean styles */
+    :root { --bg:#f7f7f8; --card:#ffffff; --text:#111; --muted:#6b7280; --border:#e5e7eb; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--text); }
+    header { background: var(--card); border-bottom: 1px solid var(--border); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 16px; }
+    .brand { display:flex; align-items:center; gap:12px; padding: 12px 0; }
+    .brand img { width: 48px; height: 48px; object-fit: contain; }
+    .brand h1 { font-size: 1.1rem; margin:0; }
+    .hint { color: var(--muted); font-size: .9rem; margin-top: 2px; }
+    main .card { background: var(--card); border:1px solid var(--border); border-radius: 14px; padding: 16px; }
+    #fallback { display:none; margin-top:12px; padding:12px; border-radius:10px; background:#fff7ed; border:1px solid #fed7aa; color:#7c2d12; }
+    .footer { text-align:center; color: var(--muted); font-size: .9rem; padding: 24px 0; }
+    /* make the widget area comfy on mobile */
+    @media (min-width: 768px) { main .card { padding: 20px; } }
+  </style>
+</head>
+<body>
+  <!-- top bar with your logo -->
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <!-- put logo.png next to this file -->
+        <img src="./logo.png" alt="AImagine logo" />
+        <div>
+          <h1>AImagine — Student Registration</h1>
+          <div class="hint">Secure signup powered by TutorBird</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" aria-live="polite">
+    <div class="card">
+      <!-- this is where the TutorBird widget will render -->
+      <div id="tb-widget"></div>
+
+      <!-- the actual TutorBird script you gave me -->
+      <script src="https://app.tutorbird.com/Widget/v4/Widget.ashx?settings=eyJTY2hvb2xJRCI6InNjaF9ZTXpKMCIsIldlYnNpdGVJRCI6Indic181RnhKUSIsIldlYnNpdGVCbG9ja0lEIjoid2JiXzQ1bldKUiJ9"></script>
+
+      <!-- if the script fails or is blocked, show a friendly note -->
+      <div id="fallback">
+        Hmm, the registration form didn’t load.  
+        Please try refreshing the page. If it still doesn’t work, contact us at
+        <a href="mailto:contact@aimagine.in">contact@aimagine.in</a>.
+      </div>
+
+      <script>
+        // simple check: if nothing appears after a moment, show the fallback message
+        (function () {
+          const CHECK_MS = 2500;
+          setTimeout(() => {
+            // if TutorBird injected content, there should be children inside body or our container
+            const widgetHasContent =
+              document.getElementById('tb-widget')?.children.length > 0 ||
+              document.body.innerText.toLowerCase().includes('tutorbird');
+            if (!widgetHasContent) {
+              document.getElementById('fallback').style.display = 'block';
+            }
+          }, CHECK_MS);
+        })();
+      </script>
+
+      <p class="hint" style="margin-top:12px">
+        Tip: if the form looks blank, try opening this page in a normal browser tab (not inside an app),
+        and make sure content blockers are off for this site.
+      </p>
+    </div>
+  </main>
+
+  <div class="footer">
+    © <span id="y"></span> AImagine. All rights reserved.
+  </div>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
